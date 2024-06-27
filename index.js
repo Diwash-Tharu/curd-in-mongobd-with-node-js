@@ -61,3 +61,42 @@ mogoose.connect("mongodb+srv://diwash:diwash123@diwash.yrbo6ty.mongodb.net/?retr
 .catch(() => {
     console.log('Connection failed');
 })  // This is the connection to the database   
+
+
+// update the [roduct by id]
+app.put ('/api/product/:id', async(req, res) => {
+    try {
+        const {id} = req.params;
+        const product = await Product.findByIdAndUpdate (id, req.body);
+        if(!product)
+            {
+                return res.status(400).json({message: 'Product not found'});
+            }
+            const updateProduct  =await Product.findById(id);
+            res.status(200).json({updateProduct});
+    }
+
+    catch (error) {
+        res.status(500).json({message: error.message})    
+    }
+})
+
+// for deleting the code of the product
+
+app.delete('/api/productdelet/:id', async(req, res) => {
+    try{
+        const {id} = req.params;
+        const product= await Product.findByIdAndDelete(id);
+
+        if(!product)
+        {
+            return res.status(404).json({message: 'Product not found'});
+        }
+        res.status(200).json({message: 'Product deleted'});
+    }
+    catch{
+        res.status(500).json({message: error.message})  
+    }
+}
+
+)
